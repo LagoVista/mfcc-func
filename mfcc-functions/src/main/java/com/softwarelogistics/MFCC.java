@@ -29,7 +29,7 @@ public class MFCC {
         double[] dblBuffer = new double[shortInputBuffer.length];
         for(int idx = 0; idx < dblBuffer.length; ++idx){
             // Normalize -1 to 1
-            dblBuffer[idx] = shortInputBuffer[idx] / (Short.MAX_VALUE / 2);
+            dblBuffer[idx] = shortInputBuffer[idx] / (float)(Short.MAX_VALUE / 2);
         }
 
         float[] result = process(dblBuffer);
@@ -37,7 +37,7 @@ public class MFCC {
         short[] outputBuffer = new short[result.length];
 
         for(int idx = 0; idx < result.length; ++idx){
-            outputBuffer[idx] = (short)(result[idx] * (Short.MAX_VALUE / 2));
+            outputBuffer[idx] = (short)(result[idx] * (float)(Short.MAX_VALUE / 2));
         }
 
         return outputBuffer;

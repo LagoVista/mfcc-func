@@ -26,7 +26,7 @@ public class AudioInputFile
     }
 
     private short readShort(DataInputStream rdr) throws IOException {
-        return (short)(rdr.readByte() & 0xff + ((rdr.readByte() & 0xff) << 8));
+        return (short)((short)(rdr.readByte() & 0xff) + ((rdr.readByte() & 0xff) << 8));
     }
 
     private void confirmString(DataInputStream rdr, String str) throws Exception {
@@ -109,11 +109,14 @@ public class AudioInputFile
     }
 
     public double[] readDoubleContent() {
-        double wavContent[] = new double[sampleSize];
-        float scaler = (float)(Short.MAX_VALUE) / 6;
+        int max = -1;
+        for(int idx = 0; idx < sampleSize; ++idx) {
+            max = Math.max(max, Math.abs(content[idx]));
+        }
 
+        double wavContent[] = new double[sampleSize];
         for(int idx = 0; idx < sampleSize; ++idx){
-            wavContent[idx] = content[idx] / scaler;
+            wavContent[idx] = (double)content[idx] / (double)max;
         }
 
         return wavContent;

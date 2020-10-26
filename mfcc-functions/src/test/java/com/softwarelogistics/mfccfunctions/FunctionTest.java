@@ -39,8 +39,8 @@ public class FunctionTest {
         byte[] buffer = Files.readAllBytes(path);
 
         final Map<String, String> queryParams = new HashMap<>();
-        queryParams.put("mels", "256");
-        queryParams.put("mfcc", "80");
+        //queryParams.put("mels", "256");
+        //queryParams.put("mfcc", "80");
         doReturn(queryParams).when(req).getQueryParameters();
         doReturn(buffer).when(req).getBody();
 
@@ -59,9 +59,16 @@ public class FunctionTest {
         final HttpResponseMessage ret = new Function().run(req, context);
 
         short[] responseBody = (short[]) ret.getBody();
+
+        for(int idx = 6; idx < responseBody.length; ++idx)
+        {
+            System.out.print(String.format("%d, ", responseBody[idx]));
+        }
+
         assertEquals(33, responseBody[1]);
-        assertEquals(80, responseBody[2]);
+        assertEquals(22, responseBody[2]);
         assertEquals(responseBody.length - 6, responseBody[0]);
+
 
         System.out.println(String.format(">>>>>> Response=[%d] Width=[%d] Height[%d]", responseBody[0], responseBody[1], responseBody[2]));
 
